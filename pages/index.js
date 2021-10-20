@@ -14,15 +14,6 @@ export async function getStaticProps() {
   }
 }
 
-
-const DeleteButton = React.forwardRef(({onClick}, ref) => {
-  return (
-    <button ref={ref} onClick={onClick} data-cy="activity-item-delete-button" className="bg-red-500 text-white px-2 py-1 rounded-md">
-      delete
-    </button>
-  )
-})
-
 export default function Home({ data }) {
   const [activity, setActivity ] = useState(data)
 
@@ -76,7 +67,9 @@ export default function Home({ data }) {
                   <h3 data-cy="activity-item-title">{ac.title}</h3>
                   <div className="flex items-center justify-between">
                     <span data-cy="activity-item-date">{new Date(ac.created_at).toDateString()}</span>
-                    <DeleteButton onClick={(e) => openDeleteModal(e, ac.id)} />
+                    <button onClick={(e) => openDeleteModal(e, ac.id)} data-cy="activity-item-delete-button" className="bg-red-500 text-white px-2 py-1 rounded-md">
+                      delete
+                    </button>
                   </div>
                 </div>
               </Link>
