@@ -1,30 +1,49 @@
 import axios from "axios"
-import React, { useState } from "react"
-import Link from 'next/link'
+import { useState } from "react"
+import { useRouter } from "next/dist/client/router"
+import Image from 'next/image'
 
 export async function getServerSideProps() {
 
-  const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
-
-  const { data } = await axios.get(url)
-  return {
-    props: {
-      data: data.data
-    },
+  try {
+    const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
+    const { data } = await axios.get(url)
+    return {
+      props: {
+        data: data.data
+      },
+    }
+  } catch (error) {
+    return {
+      props: {
+        data: []
+      }
+    }
   }
 }
 
-export default function Home({ data }) {
+export default function Home({ data = [] }) {
   const [activity, setActivity ] = useState(data)
 
   const [ deleteActivityId, setDeleteActivityId] = useState(null)
+  const [ alertMessage, setAlertMessage] = useState(null)
+
+  const router = useRouter()
 
   const createActivity = async () => {
-    const { data } = await axios.post(
-      "https://todo.api.devcode.gethired.id/activity-groups", 
-      { title: 'New Activity', email: 'hudadamar21@gmail.com' }
-    )
-    setActivity(val => [data, ...val])
+    try {
+      const { data } = await axios.post(
+        "https://todo.api.devcode.gethired.id/activity-groups", 
+        { title: 'New Activity', email: 'hudadamar21@gmail.com' }
+      )
+      setActivity(val => [data, ...val])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const navigateToDetail = (id) => {
+    router.push(`/detail/${id}`)
   }
 
   const openDeleteModal = (e, id) => {
@@ -33,17 +52,23 @@ export default function Home({ data }) {
     setDeleteActivityId(id)
   }
 
-  const handleDeleteActivity = async (e) => {
-    await axios.delete(
-      `https://todo.api.devcode.gethired.id/activity-groups/${deleteActivityId}`
-    )
-    const newAc = activity.filter(ac => ac.id !== deleteActivityId)
-    setActivity(newAc)
-    setDeleteActivityId(null)
+  const handleDeleteActivity = async () => {
+    try {
+      await axios.delete(
+        `https://todo.api.devcode.gethired.id/activity-groups/${deleteActivityId}`
+      )
+      const newAc = activity.filter(ac => ac.id !== deleteActivityId)
+      setActivity(newAc)
+      setDeleteActivityId(null)
+      setAlertMessage('Activity berhasil dihapus')
+      console.log(alertMessage);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
-   <div className="bg-gray-100">
+   <>
      <nav data-cy="header-background" className="bg-blue-400 ">
       <h1 data-cy="header-title" className="container mx-auto text-white py-5 font-bold text-2xl">TO DO LIST APP</h1>
      </nav>
@@ -56,23 +81,21 @@ export default function Home({ data }) {
        </div>
        {
          data.length === 0
-         ?  <div data-cy="activity-empty-state">
-              Empty
+         ?  <div data-cy="activity-empty-state" className="text-center">
+              <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
             </div>
-         :  <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-3 pb-10">
+         :  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 pb-10">
            {
              activity.map(ac => (
-              <Link href={`/detail/${ac.id}`} passHref key={ac.id}>
-                <div data-cy="activity-item" className="bg-white p-5 rounded-xl shadow h-56 flex flex-col justify-between mb-2">
-                  <h3 data-cy="activity-item-title">{ac.title}</h3>
-                  <div className="flex items-center justify-between">
-                    <span data-cy="activity-item-date">{new Date(ac.created_at).toDateString()}</span>
-                    <button onClick={(e) => openDeleteModal(e, ac.id)} data-cy="activity-item-delete-button" className="bg-red-500 text-white px-2 py-1 rounded-md">
-                      delete
-                    </button>
-                  </div>
+              <div data-cy="activity-item" onClick={() => navigateToDetail(ac.id)} key={ac.id} className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer">
+                <h3 data-cy="activity-item-title">{ac.title}</h3>
+                <div className="flex items-center justify-between">
+                  <span data-cy="activity-item-date">{new Date(ac.created_at).toDateString()}</span>
+                  <button onClick={(e) => openDeleteModal(e, ac.id)} data-cy="activity-item-delete-button" className="bg-red-500 text-white px-2 py-1 rounded-md">
+                    delete
+                  </button>
                 </div>
-              </Link>
+              </div>
             ))
            }
          </div>
@@ -110,8 +133,21 @@ export default function Home({ data }) {
           </div>
         </div>
        )
-       
      }
-   </div>
+
+     {
+      alertMessage &&
+      <div onClick={e => {
+        e.stopPropagation()
+        setAlertMessage('')
+      }} className="fixed inset-0 grid place-items-center bg-black/50">
+        <div onClick={e => e.stopPropagation()} data-cy="modal-information" className="flex items-center gap-5 w-[500px] py-4 px-6 rounded-xl shadow-lg bg-white">
+          <Image src="/icons/alert.svg" width="25" height="25" data-cy="modal-information-icon" alt="alert" />
+          <p data-cy="modal-information-title">{alertMessage}</p>
+        </div>
+      </div>
+     }
+
+   </>
   )
 }
