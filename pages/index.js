@@ -2,7 +2,7 @@ import axios from "axios"
 import React, { useState } from "react"
 import Link from 'next/link'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
 
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
 
