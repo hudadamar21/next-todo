@@ -22,7 +22,7 @@ function Modal ({ submit }){
         </header>
         <form onSubmit={handleSubmit} className="p-8 grid gap-5">
           <div>
-            <label className="block font-medium mb-3" for="nama" data-cy="modal-add-name-title">
+            <label className="block font-medium mb-3" htmlFor="nama" data-cy="modal-add-name-title">
               Nama List Item
             </label>
             <input 
@@ -35,7 +35,7 @@ function Modal ({ submit }){
             />
           </div>
           <div>
-            <label className="block font-medium mb-3" for="priority" data-cy="modal-add-priority-title">
+            <label className="block font-medium mb-3" htmlFor="priority" data-cy="modal-add-priority-title">
               Priority
             </label>
             <div className="w-1/3">
