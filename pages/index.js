@@ -4,20 +4,12 @@ import { useRouter } from "next/dist/client/router"
 import Image from 'next/image'
 
 export async function getServerSideProps() {
-  try {
-    const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
-    const { data } = await axios.get(url)
-    return {
-      props: {
-        data: data.data
-      },
-    }
-  } catch (error) {
-    return {
-      props: {
-        data: []
-      }
-    }
+  const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
+  const { data } = await axios.get(url)
+  return {
+    props: {
+      data: data ? data.data : []
+    },
   }
 }
 
@@ -30,16 +22,11 @@ export default function Home({ data = [] }) {
   const router = useRouter()
 
   const createActivity = async () => {
-    try {
-      const { data } = await axios.post(
-        "https://todo.api.devcode.gethired.id/activity-groups", 
-        { title: 'New Activity', email: 'hudadamar21@gmail.com' }
-      )
-      setActivity(val => [data, ...val])
-      console.log(activity);
-    } catch (error) {
-      console.log(error)
-    }
+    const { data } = await axios.post(
+      "https://todo.api.devcode.gethired.id/activity-groups", 
+      { title: 'New Activity', email: 'hudadamar21@gmail.com' }
+    )
+    setActivity(val => [data, ...val])
   }
 
   const navigateToDetail = (id) => {
@@ -53,18 +40,13 @@ export default function Home({ data = [] }) {
   }
 
   const handleDeleteActivity = async () => {
-    try {
-      await axios.delete(
-        `https://todo.api.devcode.gethired.id/activity-groups/${deleteActivityData.id}`
-      )
-      const newAc = activity.filter(ac => ac.id !== deleteActivityData.id)
-      setActivity(newAc)
-      setDeleteActivityData(null)
-      setAlertMessage('Activity berhasil dihapus')
-      console.log(alertMessage);
-    } catch (error) {
-      console.log(error)
-    }
+    await axios.delete(
+      `https://todo.api.devcode.gethired.id/activity-groups/${deleteActivityData.id}`
+    )
+    const newAc = activity.filter(ac => ac.id !== deleteActivityData.id)
+    setActivity(newAc)
+    setDeleteActivityData(null)
+    setAlertMessage('Activity berhasil dihapus')
   }
 
   return (
@@ -113,7 +95,7 @@ export default function Home({ data = [] }) {
        deleteActivityData && (
         <div onClick={e => {
           e.stopPropagation()
-          deleteActivityData(null)
+          setDeleteActivityData(null)
         }} data-cy="modal-delete" className="fixed inset-0 z-50 bg-black/40 grid place-items-center">
           <div onClick={e => e.stopPropagation()} className="w-[500px] p-10 grid place-items-center gap-10 bg-white shadow-lg rounded-2xl">
             <div data-cy="modal-delete-icon">

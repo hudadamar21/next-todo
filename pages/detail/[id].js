@@ -6,25 +6,17 @@ import { Switch } from '@headlessui/react'
 import PriorityIndicator from "../../components/PriorityIndicator"
 
 export async function getServerSideProps({ params }) {
-  console.log(params)
-  try {
-    const res = await axios.get(`https://todo.api.devcode.gethired.id/activity-groups/${params.id}`)
-    console.log(res.data)
+  const { data } = await axios.get(`https://todo.api.devcode.gethired.id/activity-groups/${params.id}`)
+    if(!data) {
+      return { props: {}}
+    }
     return {
       props: {
-        activityId: res.data.id,
-        title: res.data.title,
-        items: res.data.todo_items
+        activityId: data.id,
+        title: data.title,
+        items: data.todo_items
       }
     }
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        data: []
-      }
-    }
-  }
 }
 
 function DetailItem({activityId, title = '', items = []}) {
@@ -39,18 +31,16 @@ function DetailItem({activityId, title = '', items = []}) {
    if(!name) {
      alert('title belum diisi')
    } else {
-     try {
-       const res = await axios.post("https://todo.api.devcode.gethired.id/todo-items", {
-         activity_group_id: activityId, 
-         title: name, 
-         priority,
-         is_active: 0
-       })
-       setTodos(todo => [res.data, ...todo])
-       setCreateModal(false)
-     } catch (error) {
-       console.log(error)
-     }
+    if(activityId) {
+      const res = await axios.post("https://todo.api.devcode.gethired.id/todo-items", {
+        activity_group_id: activityId, 
+        title: name, 
+        priority,
+        is_active: 0
+      })
+      setTodos(todo => [res.data, ...todo])
+      setCreateModal(false)
+    }
    }
   }
 
