@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useRouter } from "next/dist/client/router"
 import Image from 'next/image'
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   const { data } = await axios.get(url)
   return {
