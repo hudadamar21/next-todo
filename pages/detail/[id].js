@@ -91,7 +91,7 @@ function DetailItem({activityId, title = '', items = []}) {
               <path d="M6.6665 16L14.6665 8" stroke="#111111" strokeWidth="5" strokeLinecap="square"/>
             </svg>
           </Link>
-          <h2 data-cy="activity-title" className="text-3xl font-bold">{title}</h2>
+          <h2 data-cy="todo-title" className="text-3xl font-bold">{title}</h2>
           <button data-cy="todo-title-edit-button">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M4 19.9998H8L18.5 9.49981C19.0304 8.96938 19.3284 8.24996 19.3284 7.49981C19.3284 6.74967 19.0304 6.03025 18.5 5.49981C17.9696 4.96938 17.2501 4.67139 16.5 4.67139C15.7499 4.67139 15.0304 4.96938 14.5 5.49981L4 15.9998V19.9998Z" stroke="#A4A4A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -99,7 +99,7 @@ function DetailItem({activityId, title = '', items = []}) {
             </svg>
           </button>
         </div>
-         <button onClick={() => setCreateModal(true)} data-cy="activity-add-button" className="px-4 py-2 rounded-lg bg-blue-400 text-white">
+         <button onClick={() => setCreateModal(true)} data-cy="todo-add-button" className="px-4 py-2 rounded-lg bg-blue-400 text-white">
            Tambah
          </button>
        </div>

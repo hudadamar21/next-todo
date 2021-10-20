@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useRouter } from "next/dist/client/router"
 import Image from 'next/image'
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   const { data } = await axios.get(url)
   return {
@@ -30,7 +30,7 @@ export default function Home({ data = [] }) {
   }
 
   const navigateToDetail = (id) => {
-    router.push(`/detail/${id}`)
+    router.push(`/detail/${id}`, undefined, { shallow: true })
   }
 
   const openDeleteModal = (e, ac) => {
