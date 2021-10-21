@@ -111,14 +111,14 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         <Menu as="div" className="relative z-20">
           <Menu.Button data-cy="todo-sort-button" className="h-14 w-14 rounded-full border border-gray-300 grid place-items-center">
             <svg width="22" height="18" viewBox="0 0 22 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 6L6 2M6 2L10 6M6 2V16" stroke="#888888" stroke-width="1.5" stroke-linecap="square"/>
-              <path d="M20 12L16 16M16 16L12 12M16 16V2" stroke="#888888" stroke-width="1.5" stroke-linecap="square"/>
+              <path d="M2 6L6 2M6 2L10 6M6 2V16" stroke="#888888" strokeWidth="1.5" strokeLinecap="square"/>
+              <path d="M20 12L16 16M16 16L12 12M16 16V2" stroke="#888888" strokeWidth="1.5" strokeLinecap="square"/>
             </svg>
           </Menu.Button>
           <Menu.Items data-cy="sort-parent" className="absolute top-full mt-2 bg-white grid py-2 w-56 rounded-md shadow-lg">
             {sorts.map(sort => (
-              <Menu.Item>
-                <div className="flex items-center gap-3 px-7 py-3.5 hover:bg-primary/10 cursor-pointer" data-cy="sort-selection">
+              <Menu.Item key={sort.name}>
+                <div className="flex items-center gap-3 px-7 py-3.5 hover:bg-primary/10 cursor-pointer" data-cy="sort-selection" >
                   <div data-cy="sort-selection-icon">{sort.icon}</div>
                   <div data-cy="sort-selection-title">{sort.name}</div>
                 </div>
