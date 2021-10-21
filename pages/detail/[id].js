@@ -5,22 +5,31 @@ import axios from "axios"
 import { Switch } from '@headlessui/react'
 import PriorityIndicator from "../../components/PriorityIndicator"
 
-export async function getServerSideProps({ params }) {
-  const { data } = await axios.get(`https://todo.api.devcode.gethired.id/activity-groups/${params.id}`)
-    if(!data) {
-      return { props: {}}
-    }
-    return {
-      props: {
-        activityId: data.id,
-        title: data.title,
-        items: data.todo_items
-      }
-    }
+export async function getStaticPaths() {
+  const { data } = await axios.get(
+    `https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com`
+  )
+  const paths = data.data.map(ac => ({
+    params: { id: ac.id.toString() }
+  }))
+
+  return { paths, fallback: 'blocking' }
 }
 
-function DetailItem({activityId, title = '', items = []}) {
-  const [ todos, setTodos ] = useState(items)
+export async function getStaticProps({ params }) {
+  const { data } = await axios.get(
+    `https://todo.api.devcode.gethired.id/activity-groups/${params.id}`
+  )
+  return {
+    props: {
+      data
+    },
+    revalidate: 1
+  }
+}
+
+function DetailItem({data: { id: activityId = null, title = '', todo_items = [] }}) {
+  const [ todos, setTodos ] = useState(todo_items)
   const [ deleteTodoData, setDeleteTodoData ] = useState(null)
   const [ createModal, setCreateModal ] = useState(false)
   const [ name, setName ] = useState('')
@@ -84,7 +93,7 @@ function DetailItem({activityId, title = '', items = []}) {
      <div className="container mx-auto">
        <div className="flex items-center justify-between py-10">
         <div className="flex items-center gap-3">
-          <Link data-cy="todo-back-button" href="/">
+          <Link data-cy="todo-back-button" href="/" passHref>
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M6.6665 16L14.6665 24" stroke="#111111" strokeWidth="5" strokeLinecap="square"/>
               <path d="M6.6665 16L14.6665 8" stroke="#111111" strokeWidth="5" strokeLinecap="square"/>
