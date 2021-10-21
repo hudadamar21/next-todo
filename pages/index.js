@@ -2,6 +2,7 @@ import axios from "axios"
 import { useState } from "react"
 import Image from 'next/image'
 import Link from "next/link";
+import { useRouter } from "next/router";
 import ModalDelete from "../components/ModalDelete";
 import Alert from "../components/Alert";
 
@@ -18,9 +19,9 @@ export async function getStaticProps() {
 
 export default function Home({ data = [] }) {
   const [activity, setActivity ] = useState(data)
-
   const [ deleteActivityData, setDeleteActivityData] = useState(null)
   const [ alertMessage, setAlertMessage] = useState(null)
+  const router = useRouter()
 
   const formatDate = (date) => {
     const list = ['Januari', 'Februari', 'Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
@@ -60,6 +61,10 @@ export default function Home({ data = [] }) {
     setAlertMessage('Activity berhasil dihapus')
   }
 
+  const navigateTo = (id) => {
+    router.push(`/detail/${id}`)
+  }
+
   return (
    <>
     <header data-cy="header-background" className="bg-primary">
@@ -80,7 +85,7 @@ export default function Home({ data = [] }) {
         {
           activity.length ?
           activity.map(ac => (
-            <Link href={`/detail/${ac.id}`} passHref data-cy="activity-item" key={ac.id} >
+            <div onClick={() => navigateTo(ac.id)} passHref data-cy="activity-item" key={ac.id} >
               <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer ">
                 <div data-cy="activity-item-title" className="text-xl font-bold">{ac.title}</div>
                 <div className="flex items-center justify-between">
@@ -98,7 +103,7 @@ export default function Home({ data = [] }) {
                   </button>
                 </div>
               </div>
-            </Link>
+            </div>
           ))
           : <div data-cy="activity-empty-state" className="text-center">
               <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
