@@ -76,11 +76,10 @@ function DetailItem({activityId, title = '', items = []}) {
 
   return (
     <>
-     <nav data-cy="header-background" className="bg-blue-400 ">
-       
-      <h1 data-cy="header-title" className="container mx-auto text-white py-5 font-bold text-2xl">
-        TO DO LIST APP
-      </h1>
+     <nav data-cy="header-background" className="bg-primary">
+        <h1 data-cy="header-title" className="container mx-auto text-white py-7 font-bold text-2xl">
+          TO DO LIST APP
+        </h1>
      </nav>
      <div className="container mx-auto">
        <div className="flex items-center justify-between py-10">
@@ -99,8 +98,8 @@ function DetailItem({activityId, title = '', items = []}) {
             </svg>
           </button>
         </div>
-         <button onClick={() => setCreateModal(true)} data-cy="todo-add-button" className="px-4 py-2 rounded-lg bg-blue-400 text-white">
-           Tambah
+         <button onClick={() => setCreateModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
+           + Tambah
          </button>
        </div>
        
@@ -115,7 +114,7 @@ function DetailItem({activityId, title = '', items = []}) {
                       checked={todo.is_active}
                       onChange={() => handleChangeIsActive(todo.id, { is_active: !todo.is_active})}
                       className={`
-                        ${todo.is_active ? 'bg-blue-500 border-blue-300' : 'bg-gray-100 border-gray-300'}
+                        ${todo.is_active ? 'bg-primary border-blue-300' : 'bg-gray-100 border-gray-300'}
                         border border-gray-300 rounded-sm h-5 w-5 grid place-items-center
                       `}
                     >
@@ -199,7 +198,7 @@ function DetailItem({activityId, title = '', items = []}) {
           <footer className="px-8 py-6 border-t flex justify-end">
             <button
               onClick={createTodo}
-              className="bg-blue-500 py-4 rounded-full text-white text-lg font-semibold w-36 grid place-items-center disabled:opacity-50 disabled:cursor-not-allowed bg-primary focus:ring-4 ring-primary/30"
+              className="bg-primary py-4 rounded-full text-white text-lg font-semibold w-36 grid place-items-center disabled:opacity-50 disabled:cursor-not-allowed focus:ring-4 ring-primary/30"
               data-cy="modal-add-save-button"
             >
               Simpan

@@ -5,9 +5,18 @@ module.exports = {
   theme: {
     container: {
       cener: true,
-      padding: '9rem'
+      padding: {
+        DEFAULT: '1rem',
+        sm: '4rem',
+        lg: '7rem',
+        xl: '10rem',
+      },
     },
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#16ABF8'
+      }
+    },
   },
   variants: {
     extend: {},
