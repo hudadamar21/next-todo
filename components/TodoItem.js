@@ -1,6 +1,4 @@
 import dynamic from 'next/dynamic'
-
-import { Switch } from '@headlessui/react'
 const PriorityIndicator = dynamic(() => import('./PriorityIndicator'))
 
 function TodoItem({ todo, onChangeIsActive, onDelete }) {
@@ -20,7 +18,7 @@ function TodoItem({ todo, onChangeIsActive, onDelete }) {
 
   return (
     <div data-cy="todo-item" className="relative flex items-center gap-5 bg-white px-10 py-6 border rounded-lg shadow-lg" >
-      <input className="h-5 w-5 cursor-pointer" onChange={onChangeIsActive} type="checkbox" data-cy="todo-item-checkbox" checked={todo.is_active} />
+      <input className="h-5 w-5 cursor-pointer" onChange={onChangeIsActive} type="checkbox" data-cy="todo-item-checkbox" data-checked={!!todo.is_active} checked={todo.is_active} />
       <PriorityIndicator 
         data-cy="todo-item-priority-indicator" 
         priority={todo.priority} 
