@@ -36,6 +36,9 @@ export async function getServerSideProps({ query }) {
 
 function DetailItem({data: { id: activityId = null, title = '', todo_items = [] }}) {
   const [ todos, setTodos ] = useState(todo_items)
+  const [ activityTitle, setActivityTitle ] = useState(title)
+  const [ editActivityTitle, setEditActivityTitle ] = useState(false)
+
   const [ sortType, setSortType ] = useState('Terbaru')
   const [ deleteTodoData, setDeleteTodoData ] = useState(null)
   const [ openFormModal, setOpenFormModal ] = useState(false)
@@ -92,7 +95,14 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
     return await axios.patch(`https://todo.api.devcode.gethired.id/todo-items/${id}`, data)
   }
 
-  const editIcon = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  const updateTitleActivity = async () => {
+    const { data } = await axios.patch(`https://todo.api.devcode.gethired.id/activity-groups/${activityId}`, { title: activityTitle })
+    console.log(data);
+    setActivityTitle(data.title)
+    setEditActivityTitle(false)
+  }
+
+  const editIcon = <svg className="w-9 h-9" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M4 19.9998H8L18.5 9.49981C19.0304 8.96938 19.3284 8.24996 19.3284 7.49981C19.3284 6.74967 19.0304 6.03025 18.5 5.49981C17.9696 4.96938 17.2501 4.67139 16.5 4.67139C15.7499 4.67139 15.0304 4.96938 14.5 5.49981L4 15.9998V19.9998Z" stroke="#A4A4A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M13.5 6.49982L17.5 10.4998" stroke="#A4A4A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
@@ -103,8 +113,19 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       <div className="flex items-center justify-between py-10">
       <div className="flex items-center gap-3">
         <BackButton/>
-        <h2 data-cy="todo-title" className="text-3xl font-bold">{title}</h2>
-        <button data-cy="todo-title-edit-button">
+        {
+          !editActivityTitle 
+          ? <h2 onClick={() => setEditActivityTitle(true)} data-cy="todo-title" className="text-3xl font-bold">{activityTitle}</h2>
+          : <input 
+              onBlur={updateTitleActivity} 
+              onInput={(e) => setActivityTitle(e.target.value)} 
+              type="text"
+              autoFocus
+              className="text-3xl font-bold bg-transparent focus:outline-none focus:border-b-2 border-black"
+              value={activityTitle} 
+            />
+        }
+        <button onClick={editActivityTitle ? updateTitleActivity : () => setEditActivityTitle(true)} data-cy="todo-title-edit-button">
           {editIcon}
         </button>
       </div>

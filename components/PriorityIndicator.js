@@ -8,7 +8,7 @@ function PriorityIndicator (props){
       : props.priority === 'very-low' ? 'bg-purple-500'
       : 'bg-white'
 
-  return <div {...props} className={`${classIndicator} rounded-full h-2 w-2`}></div>
+  return <div {...props} className={`${classIndicator} rounded-full h-4 w-4`}></div>
 }
 
 export default PriorityIndicator

@@ -1,8 +1,6 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 
-function AcCard ({ id, title, created_at, onDelete }) {
-  const router = useRouter()
-
+function AcCard ({ index, id, title, created_at, onDelete }) {
   const formatDate = (date) => {
     const list = ['Januari', 'Februari', 'Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
     const tanggal = new Date(date).getDate()
@@ -10,10 +8,6 @@ function AcCard ({ id, title, created_at, onDelete }) {
     const tahun = new Date(date).getFullYear()
 
     return `${tanggal} ${list[bulan]} ${tahun}`
-  }
-
-  const navigateTo = () => {
-    router.push(`/detail/${id}`)
   }
 
   const deleteIcon = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -25,21 +19,17 @@ function AcCard ({ id, title, created_at, onDelete }) {
   </svg>
 
   return (
-    <div onClick={navigateTo} className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer" data-cy="activity-item">
-      <div>
-        <div className="text-xl font-bold" data-cy="activity-item-title">
-          {title}
+    <Link href={`/detail/${id}`}>
+      <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col mb-2 cursor-pointer" data-cy="activity-item" id={`itemTodo${index}`}>
+        <div className="flex-grow">
+          <h3 className="text-xl font-bold" data-cy="activity-item-title">{title}</h3>
+        </div>
+        <div className="flex items-center justify-between">
+          <time data-cy="activity-item-date">{formatDate(created_at)}</time>
+          <button onClick={onDelete} data-cy="activity-item-delete-button">{deleteIcon}</button>
         </div>
       </div>
-      <div className="flex items-center justify-between">
-        <time data-cy="activity-item-date">
-          {formatDate(created_at)}
-        </time>
-        <button onClick={onDelete} data-cy="activity-item-delete-button">
-          {deleteIcon}
-        </button>
-      </div>
-    </div>
+    </Link>
   )
 }
 

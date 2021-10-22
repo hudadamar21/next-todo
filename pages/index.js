@@ -61,7 +61,7 @@ export default function Home({ data = [] }) {
     <div className="container mx-auto">
       <div className="flex items-center justify-between py-10">
         <h1 data-cy="activity-title" className="text-4xl font-bold" >Activity</h1>
-        <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white" >+ Tambah</button>
+        <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white">+ Tambah</button>
       </div>
       {
         activity.length === 0
@@ -69,8 +69,8 @@ export default function Home({ data = [] }) {
             <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" data-cy="activity-empty-state"/>
           </div> 
         : <div className="grid gap-3 pb-10 grid-cols-4">
-            {activity.map(ac => (
-              <AcCard key={ac.id} {...ac} onDelete={(e) => openDeleteModal(e, ac)}/>
+            {activity.map((ac, index) => (
+              <AcCard key={ac.id} index={index} {...ac} onDelete={(e) => openDeleteModal(e, ac)}/>
             ))}
           </div>
       }
