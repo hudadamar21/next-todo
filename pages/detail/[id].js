@@ -111,7 +111,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
 
   return (<>
     <AppHeader/>
-    <div className="container mx-auto">
+    <main className="container mx-auto">
       <div className="flex items-center justify-between py-10">
       <div className="flex items-center gap-3">
         <BackButton/>
@@ -154,7 +154,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
             <Image src="/images/TodoEmptyState.svg" width="500" height="500" alt="todo empty state" />
           </div>  
       }  
-    </div>
+    </main>
 
     <FormModal
       isOpen={openFormModal}

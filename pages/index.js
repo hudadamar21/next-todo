@@ -33,13 +33,12 @@ export default function Home({ data = [] }) {
     setActivity(res.data.data)
   }
 
-  const createActivity = () => {
-    axios.post(
-      "https://todo.api.devcode.gethired.id/activity-groups", 
-      { title: 'New Activity', email: 'hudadamar21@gmail.com' }
-    ).then(() => {
-      getActivity()
+  const createActivity = async () => {
+    await axios.post("https://todo.api.devcode.gethired.id/activity-groups", { 
+      title: 'New Activity', 
+      email: 'hudadamar21@gmail.com' 
     })
+    getActivity()
   }
   
   const openDeleteModal = (e, ac) => {
@@ -60,7 +59,7 @@ export default function Home({ data = [] }) {
   return (
    <section id="dashboard">
     <AppHeader/>
-    <div className="container mx-auto">
+    <main className="container mx-auto">
       <div className="flex items-center justify-between py-10">
         <PageTitle dataCy="activity-title">Activity</PageTitle>
         <AddButton onClick={createActivity} dataCy="activity-add-button" />
@@ -69,14 +68,19 @@ export default function Home({ data = [] }) {
         activity.length
         ? <div className="grid gap-3 pb-10 grid-cols-4">
             {activity.map((ac, index) => (
-              <AcCard key={ac.id} index={index} {...ac} onDelete={(e) => openDeleteModal(e, ac)}/>
+              <AcCard 
+                key={ac.id} 
+                index={index} 
+                onDelete={(e) => openDeleteModal(e, ac)}
+                {...ac} 
+              />
             ))}
           </div>
         : <div className="text-center" data-cy="activity-empty-state">
             <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
           </div> 
       }
-    </div>
+    </main>
 
     {
       deleteActivityData &&
