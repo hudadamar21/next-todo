@@ -130,7 +130,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         </button>
       </div>
         <div className="flex items-center gap-5">
-          <TodoSorter getValue={setSortType}/>
+          <TodoSorter selected={sortType} getValue={setSortType}/>
           <button onClick={() => setOpenFormModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
             + Tambah
           </button>
@@ -138,7 +138,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       </div>
       {
         todos.length
-        ?  <div className="grid grid-cols-1 gap-3 pb-10">
+        ? <div className="grid grid-cols-1 gap-3 pb-10">
             {todos.map(todo => (
               <TodoItem 
                 key={todo.id}
@@ -150,7 +150,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
               />
             ))}  
           </div>
-        :  <div data-cy="activity-empty-state" className="text-center">
+        :  <div data-cy="todo-empty-state" className="text-center">
             <Image src="/images/TodoEmptyState.svg" width="500" height="500" alt="todo empty state" />
           </div>  
       }  

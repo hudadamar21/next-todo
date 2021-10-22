@@ -64,15 +64,15 @@ export default function Home({ data = [] }) {
         <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white">+ Tambah</button>
       </div>
       {
-        activity.length === 0
-        ? <div className="text-center">
-            <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" data-cy="activity-empty-state"/>
-          </div> 
-        : <div className="grid gap-3 pb-10 grid-cols-4">
+        activity.length
+        ? <div className="grid gap-3 pb-10 grid-cols-4">
             {activity.map((ac, index) => (
               <AcCard key={ac.id} index={index} {...ac} onDelete={(e) => openDeleteModal(e, ac)}/>
             ))}
           </div>
+        : <div className="text-center" data-cy="activity-empty-state">
+            <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
+          </div> 
       }
     </div>
 
