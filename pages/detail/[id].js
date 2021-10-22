@@ -46,10 +46,9 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   const [ openFormModal, setOpenFormModal ] = useState(false)
   const [ alertMessage, setAlertMessage] = useState(null)
 
-  const changeSortBy = (value) => {
-    setSortType(value)
-    setTodos(() => [...sorting(todos, value)])
-  }
+  useEffect(() => {
+    setTodos(() => [...sorting(todos, sortType)])
+  }, [sortType])
 
   const createTodo = async (name, priority) => {
     console.log(name, priority);
@@ -133,7 +132,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         </button>
       </div>
         <div className="flex items-center gap-5">
-          <TodoSorter selected={sortType} getValue={changeSortBy}/>
+          <TodoSorter selected={sortType} getValue={setSortType}/>
           <AddButton onClick={() => setOpenFormModal(true)} dataCy="todo-add-button" />
         </div>
       </div>
