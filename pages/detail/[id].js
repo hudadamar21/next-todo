@@ -1,9 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import axios from "axios"
-  import dynamic from 'next/dynamic'
-
-
+import dynamic from 'next/dynamic'
 
 const AppHeader = dynamic(() => import('../../components/AppHeader'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
@@ -14,9 +12,21 @@ const ModalDelete = dynamic(() => import('../../components/ModalDelete'))
 const Alert = dynamic(() => import('../../components/Alert'))
 
 export async function getServerSideProps({ params }) {
+  console.time('process')
   const { data } = await axios.get(
     `https://todo.api.devcode.gethired.id/activity-groups/${params.id}`
   )
+  console.timeEnd('process')
+  
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
   return {
     props: {
       data

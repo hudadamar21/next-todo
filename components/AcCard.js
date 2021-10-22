@@ -1,6 +1,7 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 function AcCard ({ id, title, created_at, onDelete }) {
+  const router = useRouter()
 
   const formatDate = (date) => {
     const list = ['Januari', 'Februari', 'Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember']
@@ -9,6 +10,10 @@ function AcCard ({ id, title, created_at, onDelete }) {
     const tahun = new Date(date).getFullYear()
 
     return `${tanggal} ${list[bulan]} ${tahun}`
+  }
+
+  const navigateTo = () => {
+    router.push(`/detail/${id}`)
   }
 
   const deleteIcon = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -20,21 +25,19 @@ function AcCard ({ id, title, created_at, onDelete }) {
   </svg>
 
   return (
-    <Link data-cy="activity-item" href={`/detail/${id}`} passHref >
-      <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer">
-        <p className="text-xl font-bold" data-cy="activity-item-title">
-          {title}
-        </p>
-        <div className="flex items-center justify-between">
-          <time data-cy="activity-item-date">
-            {formatDate(created_at)}
-          </time>
-          <button onClick={onDelete} data-cy="activity-item-delete-button">
-            {deleteIcon}
-          </button>
-        </div>
+    <div onClick={navigateTo} className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer" data-cy="activity-item">
+      <p className="text-xl font-bold" data-cy="activity-item-title">
+        {title}
+      </p>
+      <div className="flex items-center justify-between">
+        <time data-cy="activity-item-date">
+          {formatDate(created_at)}
+        </time>
+        <button onClick={onDelete} data-cy="activity-item-delete-button">
+          {deleteIcon}
+        </button>
       </div>
-    </Link>
+    </div>
   )
 }
 

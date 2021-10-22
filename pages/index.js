@@ -13,7 +13,7 @@ export async function getServerSideProps() {
   const { data } = await axios.get(url)
   return {
     props: {
-      data: data ? data.data : []
+      data: data.data
     }
   }
 }
