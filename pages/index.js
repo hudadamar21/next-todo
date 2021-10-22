@@ -3,7 +3,7 @@ import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-const AppHeader = dynamic(() => import('../components/AppHeader'))
+import AppHeader from '../components/AppHeader';
 const AcCard = dynamic(() => import('../components/AcCard'))
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
@@ -31,12 +31,13 @@ export default function Home({ data = [] }) {
     setActivity(res.data.data)
   }
 
-  const createActivity = async () => {
-    await axios.post(
+  const createActivity = () => {
+    axios.post(
       "https://todo.api.devcode.gethired.id/activity-groups", 
       { title: 'New Activity', email: 'hudadamar21@gmail.com' }
-    )
-    getActivity()
+    ).then(() => {
+      getActivity()
+    })
   }
   
   const openDeleteModal = (e, ac) => {
@@ -59,12 +60,8 @@ export default function Home({ data = [] }) {
     <AppHeader/>
     <div className="container mx-auto">
       <div className="flex items-center justify-between py-10">
-        <h1 className="text-3xl font-bold" data-cy="activity-title">
-          Activity
-        </h1>
-        <button onClick={createActivity} className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white" data-cy="activity-add-button">
-          + Tambah
-        </button>
+        <h1 data-cy="activity-title" className="text-4xl font-bold" >Activity</h1>
+        <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white" >+ Tambah</button>
       </div>
       {
         activity.length === 0

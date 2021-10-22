@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 
 import sorting from "../../utils/sorting";
 
-const AppHeader = dynamic(() => import('../../components/AppHeader'))
+import AppHeader from '../../components/AppHeader';
 const FormModal = dynamic(() => import('../../components/FormModal'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
 const TodoItem = dynamic(() => import('../../components/TodoItem'))
