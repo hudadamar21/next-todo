@@ -7,16 +7,13 @@ const AppHeader = dynamic(() => import('../../components/AppHeader'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
 const TodoItem = dynamic(() => import('../../components/TodoItem'))
 const TodoSorter = dynamic(() => import('../../components/TodoSorter'))
-
 const ModalDelete = dynamic(() => import('../../components/ModalDelete'))
 const Alert = dynamic(() => import('../../components/Alert'))
 
-export async function getServerSideProps({ params }) {
-  console.time('process')
+export async function getServerSideProps({ query }) {
   const { data } = await axios.get(
-    `https://todo.api.devcode.gethired.id/activity-groups/${params.id}`
+    `https://todo.api.devcode.gethired.id/activity-groups/${query.id}`
   )
-  console.timeEnd('process')
   
   if (!data) {
     return {

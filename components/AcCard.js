@@ -26,9 +26,11 @@ function AcCard ({ id, title, created_at, onDelete }) {
 
   return (
     <div onClick={navigateTo} className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col justify-between mb-2 cursor-pointer" data-cy="activity-item">
-      <p className="text-xl font-bold" data-cy="activity-item-title">
-        {title}
-      </p>
+      <div>
+        <div className="text-xl font-bold" data-cy="activity-item-title">
+          {title}
+        </div>
+      </div>
       <div className="flex items-center justify-between">
         <time data-cy="activity-item-date">
           {formatDate(created_at)}

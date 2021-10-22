@@ -11,7 +11,7 @@ const Alert = dynamic(() => import('../components/Alert'))
 export async function getServerSideProps() {
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   const { data } = await axios.get(url)
-  return {
+  return {  
     props: {
       data: data.data
     }
@@ -32,11 +32,11 @@ export default function Home({ data = [] }) {
   }
 
   const createActivity = async () => {
-    const { data } = await axios.post(
+    await axios.post(
       "https://todo.api.devcode.gethired.id/activity-groups", 
       { title: 'New Activity', email: 'hudadamar21@gmail.com' }
     )
-    setActivity(ac => [data, ...ac])
+    getActivity()
   }
   
   const openDeleteModal = (e, ac) => {
@@ -59,17 +59,17 @@ export default function Home({ data = [] }) {
     <AppHeader/>
     <div className="container mx-auto">
       <div className="flex items-center justify-between py-10">
-        <h1 data-cy="activity-title" className="text-3xl font-bold">
+        <h1 className="text-3xl font-bold" data-cy="activity-title">
           Activity
         </h1>
-        <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
+        <button onClick={createActivity} className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white" data-cy="activity-add-button">
           + Tambah
         </button>
       </div>
       {
         activity.length === 0
-        ? <div data-cy="activity-empty-state" className="text-center">
-            <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
+        ? <div className="text-center">
+            <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" data-cy="activity-empty-state"/>
           </div> 
         : <div className="grid gap-3 pb-10 grid-cols-4">
             {activity.map(ac => (
