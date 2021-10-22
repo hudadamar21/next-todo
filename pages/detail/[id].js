@@ -1,9 +1,10 @@
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 
 const AppHeader = dynamic(() => import('../../components/AppHeader'))
+const FormModal = dynamic(() => import('../../components/FormModal'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
 const TodoItem = dynamic(() => import('../../components/TodoItem'))
 const TodoSorter = dynamic(() => import('../../components/TodoSorter'))
@@ -34,12 +35,15 @@ export async function getServerSideProps({ query }) {
 function DetailItem({data: { id: activityId = null, title = '', todo_items = [] }}) {
   const [ todos, setTodos ] = useState(todo_items)
   const [ deleteTodoData, setDeleteTodoData ] = useState(null)
-  const [ createModal, setCreateModal ] = useState(false)
-  const [ name, setName ] = useState('')
-  const [ priority, setPriority ] = useState('very-high')
+  const [ openFormModal, setOpenFormModal ] = useState(false)
   const [ alertMessage, setAlertMessage] = useState(null)
 
-  const createTodo = async () => {
+  useEffect(() => {
+    console.log(openFormModal);
+  }, [openFormModal])
+
+  const createTodo = async (name, priority) => {
+    console.log(name, priority);
    if(!name) {
      alert('title belum diisi')
    } else {
@@ -51,13 +55,12 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         is_active: 0
       })
       setTodos(todo => [res.data, ...todo])
-      setCreateModal(false)
+      setOpenFormModal(false)
     }
    }
   }
 
-  const openDeleteModal = (e, todo) => {
-    e.stopPropagation()
+  const openDeleteModal = (todo) => {
     setDeleteTodoData(todo)
   }
 
@@ -104,7 +107,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       </div>
         <div className="flex items-center gap-5">
           <TodoSorter />
-          <button onClick={() => setCreateModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
+          <button onClick={() => setOpenFormModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
             + Tambah
           </button>
         </div>
@@ -116,6 +119,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
               <TodoItem 
                 key={todo.id}
                 todo={todo}
+                onDelete={openDeleteModal}
                 onChangeIsActive={() => 
                   handleChangeIsActive(todo.id, { is_active: !todo.is_active})
                 }
@@ -128,68 +132,21 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       }  
     </div>
 
-    {
-      createModal &&
-      <div onClick={e => {
-        e.stopPropagation()
-        setCreateModal(false)
-      }} data-cy="modal-add" className="fixed inset-0 z-50 bg-black/50 grid justify-center items-start pt-14 overflow-auto">
-      <div onClick={e => e.stopPropagation()} className="rounded-2xl w-[850px] bg-white">
-        <header className="flex items-center justify-between px-8 py-6 w-full border-b">
-          <h1 className="text-xl font-semibold" data-cy="modal-add-title">
-            Tambah List Item
-          </h1>
-          <button onClick={() => setCreateModal(false)} className="text-gray-400 hover:text-gray-500" data-cy="modal-add-close-button">
-            X
-          </button>
-        </header>
-        <form className="p-8 grid gap-5">
-          <div>
-            <label className="block font-medium mb-3" htmlFor="nama" data-cy="modal-add-name-title">
-              Nama List Item
-            </label>
-            <input 
-              className="px-5 py-4 w-full rounded-lg border focus:outline-none focus:ring-1 ring-primary" 
-              type="text" 
-              id="nama"
-              onInput={e => setName(e.target.value)}
-              placeholder="Tambahkan Nama Activity" 
-              data-cy="modal-add-name-input"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-3" htmlFor="priority" data-cy="modal-add-priority-title">
-              Priority
-            </label>
-            <div className="w-1/3">
-              <select data-cy="modal-add-priority-dropdown" onChange={e => setPriority(e.target.value)} name="priority" id="priority">
-                <option data-cy="modal-add-priority-item" value="very-high">Very High</option>
-                <option data-cy="modal-add-priority-item" value="high">High</option>
-                <option data-cy="modal-add-priority-item" value="normal">Normal</option>
-                <option data-cy="modal-add-priority-item" value="low">Low</option>
-                <option data-cy="modal-add-priority-item" value="very-low">Very Low</option>
-              </select>
-            </div>
-          </div>
-        </form>
-        <footer className="px-8 py-6 border-t flex justify-end">
-          <button
-            onClick={createTodo}
-            className="bg-primary py-4 rounded-full text-white text-lg font-semibold w-36 grid place-items-center disabled:opacity-50 disabled:cursor-not-allowed focus:ring-4 ring-primary/30"
-            data-cy="modal-add-save-button"
-          >
-            Simpan
-          </button>
-        </footer>
-      </div>
-    </div>
-    }
-
-    <ModalDelete
-      data={deleteTodoData}
-      onClose={() => setDeleteTodoData(null)}
-      handleDelete={handleDeleteTodo}
+    <FormModal
+      isOpen={openFormModal}
+      onClose={() => setOpenFormModal(false)}
+      onSubmitTodo={createTodo}
     />
+
+    {
+      !!deleteTodoData &&
+      <ModalDelete
+        data={deleteTodoData}
+        onClose={() => setDeleteTodoData(null)}
+        handleDelete={handleDeleteTodo}
+        
+      />
+    }
 
     <Alert 
       message={alertMessage}

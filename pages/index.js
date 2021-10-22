@@ -79,11 +79,14 @@ export default function Home({ data = [] }) {
       }
     </div>
 
-    <ModalDelete
-      data={deleteActivityData}
-      onClose={() => setDeleteActivityData(null)}
-      handleDelete={handleDeleteActivity}
-    />
+    {
+      deleteActivityData &&
+      <ModalDelete
+        data={deleteActivityData}
+        onClose={() => setDeleteActivityData(null)}
+        handleDelete={handleDeleteActivity}
+      />
+    }
 
     <Alert 
       message={alertMessage}
