@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic'
 
 import sorting from "../../utils/sorting";
 
-import AppHeader from '../../components/AppHeader';
+const AppHeader = dynamic(() => import('../../components/AppHeader'))
+const PageTitle = dynamic(() => import('../../components/PageTitle'))
+const AddButton = dynamic(() => import('../../components/AddButton'))
 const FormModal = dynamic(() => import('../../components/FormModal'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
 const TodoItem = dynamic(() => import('../../components/TodoItem'))
@@ -115,7 +117,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         <BackButton/>
         {
           !editActivityTitle 
-          ? <h2 onClick={() => setEditActivityTitle(true)} data-cy="todo-title" className="text-3xl font-bold">{activityTitle}</h2>
+          ? <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="todo-title">{activityTitle}</PageTitle>
           : <input 
               onBlur={updateTitleActivity} 
               onInput={(e) => setActivityTitle(e.target.value)} 
@@ -131,9 +133,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       </div>
         <div className="flex items-center gap-5">
           <TodoSorter selected={sortType} getValue={setSortType}/>
-          <button onClick={() => setOpenFormModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
-            + Tambah
-          </button>
+          <AddButton onClick={() => setOpenFormModal(true)} dataCy="todo-add-button" />
         </div>
       </div>
       {

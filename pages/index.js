@@ -3,7 +3,9 @@ import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-import AppHeader from '../components/AppHeader';
+const AppHeader = dynamic(() => import('../components/AppHeader'))
+const PageTitle = dynamic(() => import('../components/PageTitle'))
+const AddButton = dynamic(() => import('../components/AddButton'))
 const AcCard = dynamic(() => import('../components/AcCard'))
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
@@ -56,12 +58,12 @@ export default function Home({ data = [] }) {
   }
 
   return (
-   <>
+   <section id="dashboard">
     <AppHeader/>
     <div className="container mx-auto">
       <div className="flex items-center justify-between py-10">
-        <h1 data-cy="activity-title" className="text-4xl font-bold" >Activity</h1>
-        <button data-cy="activity-add-button" onClick={createActivity} className="px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white">+ Tambah</button>
+        <PageTitle dataCy="activity-title">Activity</PageTitle>
+        <AddButton onClick={createActivity} dataCy="activity-add-button" />
       </div>
       {
         activity.length
@@ -89,6 +91,6 @@ export default function Home({ data = [] }) {
       message={alertMessage}
       onClose={() => setAlertMessage('')}
     />
-   </>
+   </section>
   )
 }
