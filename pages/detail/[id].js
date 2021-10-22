@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 
+import useSort from "../../hooks/useSort";
+
 const AppHeader = dynamic(() => import('../../components/AppHeader'))
 const FormModal = dynamic(() => import('../../components/FormModal'))
 const BackButton = dynamic(() => import('../../components/BackButton'))
@@ -34,13 +36,14 @@ export async function getServerSideProps({ query }) {
 
 function DetailItem({data: { id: activityId = null, title = '', todo_items = [] }}) {
   const [ todos, setTodos ] = useState(todo_items)
+  const [ sortType, setSortType ] = useState('Terbaru')
   const [ deleteTodoData, setDeleteTodoData ] = useState(null)
   const [ openFormModal, setOpenFormModal ] = useState(false)
   const [ alertMessage, setAlertMessage] = useState(null)
 
   useEffect(() => {
-    console.log(openFormModal);
-  }, [openFormModal])
+    setTodos(() => [...useSort(todos, sortType)])
+  }, [sortType])
 
   const createTodo = async (name, priority) => {
     console.log(name, priority);
@@ -106,7 +109,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
         </button>
       </div>
         <div className="flex items-center gap-5">
-          <TodoSorter />
+          <TodoSorter getValue={setSortType}/>
           <button onClick={() => setOpenFormModal(true)} data-cy="todo-add-button" className="px-8 py-3 text-lg font-semibold rounded-full bg-primary text-white">
             + Tambah
           </button>

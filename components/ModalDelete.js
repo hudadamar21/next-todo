@@ -13,8 +13,8 @@ function ModalDelete({ data, handleDelete, onClose }) {
         </div>
 
         <Dialog.Title className="text-xl w-full text-center py-10" data-cy="modal-delete-title">
-          Apakah anda yakin menghapus activity 
-          <span className="font-bold">“{data.title}”?</span> 
+          Apakah anda yakin menghapus activity
+          <span className="font-bold"> "{data.title}"?</span> 
         </Dialog.Title>
 
         <div className="grid grid-flow-col gap-5 w-full px-10">
