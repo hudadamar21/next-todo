@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 
-import useSort from "../../hooks/useSort";
+import sorting from "../../utils/sorting";
 
 const AppHeader = dynamic(() => import('../../components/AppHeader'))
 const FormModal = dynamic(() => import('../../components/FormModal'))
@@ -42,7 +42,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   const [ alertMessage, setAlertMessage] = useState(null)
 
   useEffect(() => {
-    setTodos(() => [...useSort(todos, sortType)])
+    setTodos(() => [...sorting(todos, sortType)])
   }, [sortType])
 
   const createTodo = async (name, priority) => {
