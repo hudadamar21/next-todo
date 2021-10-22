@@ -20,18 +20,7 @@ function TodoItem({ todo, onChangeIsActive, onDelete }) {
 
   return (
     <div data-cy="todo-item" className="relative flex items-center gap-5 bg-white px-10 py-6 border rounded-lg shadow-lg" >
-      <Switch 
-        data-cy="todo-item-checkbox"
-        checked={todo.is_active}
-        onChange={onChangeIsActive}
-        className={`${todo.is_active ? 'bg-primary border-blue-300' : 'bg-gray-100 border-gray-300'} border border-gray-300 rounded-sm h-8 w-8 grid place-items-center`}
-      >
-        { todo.is_active ? (
-          <svg className="w-6 h-6" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.9165 6.99995L5.83317 9.91662L11.6665 4.08328" stroke="white" strokeWidth="2" strokeLinecap="square"/>
-          </svg>                        
-        ) : false}
-      </Switch>
+      <input className="h-5 w-5 cursor-pointer" onChange={onChangeIsActive} type="checkbox" data-cy="todo-item-checkbox" checked={todo.is_active} />
       <PriorityIndicator 
         data-cy="todo-item-priority-indicator" 
         priority={todo.priority} 

@@ -3,7 +3,7 @@ import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-const AppHeader = dynamic(() => import('../components/AppHeader'))
+const MainLayout = dynamic(() => import('../layouts/MainLayout'))
 const PageTitle = dynamic(() => import('../components/PageTitle'))
 const AddButton = dynamic(() => import('../components/AddButton'))
 const AcCard = dynamic(() => import('../components/AcCard'))
@@ -57,13 +57,12 @@ export default function Home({ data = [] }) {
   }
 
   return (
-   <section id="dashboard">
-    <AppHeader/>
-    <main className="container mx-auto">
-      <div className="flex items-center justify-between py-10">
+    <MainLayout
+      header={<>
         <PageTitle dataCy="activity-title">Activity</PageTitle>
         <AddButton onClick={createActivity} dataCy="activity-add-button" />
-      </div>
+      </>}
+    >
       {
         activity.length
         ? <div className="grid gap-3 pb-10 grid-cols-4">
@@ -80,21 +79,20 @@ export default function Home({ data = [] }) {
             <Image src="/images/ActivityEmptyState.svg" width="500" height="500" alt="activity empty state" />
           </div> 
       }
-    </main>
 
     {
       deleteActivityData &&
       <ModalDelete
-        data={deleteActivityData}
-        onClose={() => setDeleteActivityData(null)}
-        handleDelete={handleDeleteActivity}
+      data={deleteActivityData}
+      onClose={() => setDeleteActivityData(null)}
+      handleDelete={handleDeleteActivity}
       />
     }
 
     <Alert 
       message={alertMessage}
       onClose={() => setAlertMessage('')}
-    />
-   </section>
+      />
+   </MainLayout>
   )
 }

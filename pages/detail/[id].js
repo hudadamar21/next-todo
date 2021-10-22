@@ -1,11 +1,11 @@
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 
 import sorting from "../../utils/sorting";
 
-const AppHeader = dynamic(() => import('../../components/AppHeader'))
+const MainLayout = dynamic(() => import('../../layouts/MainLayout'))
 const PageTitle = dynamic(() => import('../../components/PageTitle'))
 const AddButton = dynamic(() => import('../../components/AddButton'))
 const FormModal = dynamic(() => import('../../components/FormModal'))
@@ -46,9 +46,11 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   const [ openFormModal, setOpenFormModal ] = useState(false)
   const [ alertMessage, setAlertMessage] = useState(null)
 
-  useEffect(() => {
-    setTodos(() => [...sorting(todos, sortType)])
-  }, [sortType])
+  
+  const changeSortBy = (value) => {
+    setSortType(value)
+    setTodos(() => [...sorting(todos,value)])
+  }
 
   const createTodo = async (name, priority) => {
     console.log(name, priority);
@@ -109,33 +111,33 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
     <path d="M13.5 6.49982L17.5 10.4998" stroke="#A4A4A4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 
-  return (<>
-    <AppHeader/>
-    <main className="container mx-auto">
-      <div className="flex items-center justify-between py-10">
-      <div className="flex items-center gap-3">
-        <BackButton/>
-        {
-          !editActivityTitle 
-          ? <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="todo-title">{activityTitle}</PageTitle>
-          : <input 
-              onBlur={updateTitleActivity} 
-              onInput={(e) => setActivityTitle(e.target.value)} 
-              type="text"
-              autoFocus
-              className="text-3xl font-bold bg-transparent focus:outline-none focus:border-b-2 border-black"
-              value={activityTitle} 
-            />
-        }
-        <button onClick={editActivityTitle ? updateTitleActivity : () => setEditActivityTitle(true)} data-cy="todo-title-edit-button">
-          {editIcon}
-        </button>
-      </div>
+  return (
+    <MainLayout
+      header={<>
+        <div className="flex items-center gap-3">
+          <BackButton/>
+          {
+            !editActivityTitle 
+            ? <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="todo-title">{activityTitle}</PageTitle>
+            : <input 
+                onBlur={updateTitleActivity} 
+                onInput={(e) => setActivityTitle(e.target.value)} 
+                type="text"
+                autoFocus
+                className="text-3xl font-bold bg-transparent focus:outline-none focus:border-b-2 border-black"
+                value={activityTitle} 
+              />
+          }
+          <button onClick={editActivityTitle ? updateTitleActivity : () => setEditActivityTitle(true)} data-cy="todo-title-edit-button">
+            {editIcon}
+          </button>
+        </div>
         <div className="flex items-center gap-5">
-          <TodoSorter selected={sortType} getValue={setSortType}/>
+          <TodoSorter selected={sortType} getValue={changeSortBy}/>
           <AddButton onClick={() => setOpenFormModal(true)} dataCy="todo-add-button" />
         </div>
-      </div>
+      </>}
+    >
       {
         todos.length
         ? <div className="grid grid-cols-1 gap-3 pb-10">
@@ -154,7 +156,6 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
             <Image src="/images/TodoEmptyState.svg" width="500" height="500" alt="todo empty state" />
           </div>  
       }  
-    </main>
 
     <FormModal
       isOpen={openFormModal}
@@ -176,7 +177,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       message={alertMessage}
       onClose={() => setAlertMessage('')}
     />
-   </>
+    </MainLayout>
   )
 }
 
