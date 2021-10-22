@@ -19,7 +19,7 @@ function AcCard ({ index, id, title, created_at, onDelete }) {
   </svg>
 
   return (
-    <Link href={`/detail/${id}`}>
+    <Link href={`/detail/${id}`} passHref>
       <div className="bg-white p-5 rounded-xl shadow-lg border border-gray-200 h-56 flex flex-col mb-2 cursor-pointer" data-cy="activity-item" id={`itemTodo${index}`}>
         <div className="flex-grow">
           <h3 className="text-xl font-bold" data-cy="activity-item-title">{title}</h3>
