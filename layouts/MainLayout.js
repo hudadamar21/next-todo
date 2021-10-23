@@ -1,7 +1,7 @@
 function MainLayout({ children, header }) {
  return <>
-  <header className="bg-primary py-7" data-cy="header-background">
-    <h1 data-cy="header-title" className="container text-white font-bold text-3xl" >
+  <header className="bg-primary py-10" data-cy="header-background">
+    <h1 data-cy="header-title" className="container text-white font-bold text-4xl" >
       TO DO LIST APP
     </h1>
   </header>
@@ -9,7 +9,9 @@ function MainLayout({ children, header }) {
     <div className="flex items-center justify-between py-10">
       { header }
     </div>
-    { children }
+    <section>
+      { children }
+    </section>
   </main>
  </>
 }

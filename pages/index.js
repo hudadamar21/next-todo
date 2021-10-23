@@ -7,9 +7,9 @@ const MainLayout = dynamic(
   () => import('../layouts/MainLayout'),
   { loading: () => <p>loading...</p>, ssr: false }
 )
-const PageTitle = dynamic(() => import('../components/PageTitle'))
-const AddButton = dynamic(() => import('../components/AddButton'))
-const AcCard = dynamic(() => import('../components/AcCard'))
+const PageTitle = dynamic(() => import('../components/PageTitle'), { ssr: false })
+const AddButton = dynamic(() => import('../components/AddButton'), { ssr: false })
+const AcCard = dynamic(() => import('../components/AcCard'), { ssr: false })
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
 
@@ -55,17 +55,15 @@ export default function Home({ data = [] }) {
     setAlertMessage('Activity berhasil dihapus')
   }
 
-  const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="white" viewBox="0 0 24 24" stroke="white"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+  const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="white" viewBox="0 0 24 24" stroke="white"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
 
   return (
     <MainLayout
       header={<>
-        <h1 className="text-4xl font-bold" data-cy="activity-title">
-        Activity
-        </h1>
-        <button onClick={createActivity} className="flex items-center gap-3 px-8 py-3 text-xl font-semibold rounded-full bg-primary text-white" data-cy="activity-add-button">
-          {plusIcon} Tambah
-        </button>
+        <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
+          Activity
+        </PageTitle>
+        <AddButton onClick={createActivity} dataCy="activity-add-button" />
       </>}
     >
       {
