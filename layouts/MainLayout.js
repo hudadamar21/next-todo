@@ -3,7 +3,7 @@ function MainLayout({ children }) {
   <div >
     <header className="bg-primary w-full" data-cy="header-background">
       <div className="container">
-        <h1 data-cy="header-title" className=" py-10 text-white font-bold text-3xl" >
+        <h1 data-cy="header-title">
           TO DO LIST APP
         </h1>
       </div>

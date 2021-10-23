@@ -3,10 +3,7 @@ import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-const MainLayout = dynamic(
-  () => import('../layouts/MainLayout'),
-  { loading: () => <p>loading...</p> }
-)
+const MainLayout = dynamic(() => import('../layouts/MainLayout'))
 const PageTitle = dynamic(() => import('../components/PageTitle'))
 const AddButton = dynamic(() => import('../components/AddButton'))
 const AcCard = dynamic(() => import('../components/AcCard'))
@@ -59,10 +56,14 @@ export default function Home({ data = [] }) {
   return (
     <MainLayout>
       <div className="flex items-center justify-between py-10">
-        <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
-          Activity
-        </PageTitle>
-        <AddButton onClick={createActivity} dataCy="activity-add-button" />
+        <div>
+          <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
+            Activity
+          </PageTitle>
+        </div>
+        <div>
+          <AddButton onClick={createActivity} dataCy="activity-add-button" />
+        </div>
       </div>
       {
         activity.length
