@@ -13,7 +13,7 @@ const Alert = dynamic(() => import('../components/Alert'))
 Home.getInitialProps = async () => {
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   const { data } = await axios.get(url)
-  return { data }
+  return { data: data.data }
 }
 
 export default function Home({ data = [] }) {
