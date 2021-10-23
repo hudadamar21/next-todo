@@ -51,8 +51,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       const res = await axios.post("https://todo.api.devcode.gethired.id/todo-items", {
         activity_group_id: activityId, 
         title: name, 
-        priority,
-        is_active: 0
+        priority
       })
       setTodos(todo => [res.data, ...todo])
       setOpenFormModal(false)
