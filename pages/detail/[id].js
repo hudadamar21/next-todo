@@ -64,10 +64,9 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   }
 
   const handleChangeIsActive = async (id, data) => {
-    const res = await updateTodo(id, data)
-    setTodos(todos => todos.map(todo => {
-      return todo.id === id ? { ...todo, is_active: res.data.is_active } : todo
-    }))
+    await updateTodo(id, data)
+    const restodo = await axios.get(`https://todo.api.devcode.gethired.id/todo-items?activity_group_id=${activityId}`)
+    setTodos(() => [...sorting(restodo.data.data, sortType)])
   }
 
   const handleDeleteTodo = async () => {
