@@ -19,7 +19,7 @@ function FormModal({ isOpen, onClose, onSubmitTodo }) {
   return (
     <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 grid place-items-center" >
       <Dialog.Overlay className="fixed inset-0 z-10 bg-black/50 grid place-items-center"/>
-      <div data-cy="modal-add" className="relative z-20 rounded-2xl w-[850px] bg-white">
+      <div data-cy="modal-add" className="relative z-20 rounded-2xl w-full lg:w-[850px] bg-white">
         <header className="flex items-center justify-between px-8 py-6 w-full border-b">
           <h1 className="text-xl font-semibold" data-cy="modal-add-title">
             Tambah List Item
