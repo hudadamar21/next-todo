@@ -3,7 +3,10 @@ import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
-const MainLayout = dynamic(() => import('../layouts/MainLayout'))
+const MainLayout = dynamic(
+  () => import('../layouts/MainLayout'),
+  { loading: () => <p>loading...</p>, ssr: false }
+)
 const PageTitle = dynamic(() => import('../components/PageTitle'))
 const AddButton = dynamic(() => import('../components/AddButton'))
 const AcCard = dynamic(() => import('../components/AcCard'))
