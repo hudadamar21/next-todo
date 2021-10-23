@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
@@ -18,9 +18,14 @@ Home.getInitialProps = async () => {
 }
 
 export default function Home({ data = [] }) {
+  const [ load, setLoad ] = useState(false)
   const [activity, setActivity ] = useState(data)
   const [ deleteActivityData, setDeleteActivityData] = useState(null)
   const [ alertMessage, setAlertMessage] = useState(null)
+
+  useEffect(() => {
+    setLoad(true)
+  }, [])
 
   const getActivity = async () => {
     const res = await axios.get(
@@ -53,17 +58,11 @@ export default function Home({ data = [] }) {
     setAlertMessage('Activity berhasil dihapus')
   }
 
-  return (
+  return load && (
     <MainLayout>
       <div className="flex items-center justify-between py-10">
-        <div>
-          <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
-            Activity
-          </PageTitle>
-        </div>
-        <div>
-          <AddButton onClick={createActivity} dataCy="activity-add-button" />
-        </div>
+        <PageTitle dataCy="activity-title">Activity</PageTitle>
+        <AddButton onClick={createActivity} dataCy="activity-add-button" />
       </div>
       {
         activity.length
@@ -95,6 +94,6 @@ export default function Home({ data = [] }) {
       message={alertMessage}
       onClose={() => setAlertMessage('')}
       />
-   </MainLayout>
+    </MainLayout>
   )
 }
