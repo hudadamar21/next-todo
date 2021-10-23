@@ -101,13 +101,14 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   </svg>
 
   return (
-    <MainLayout
-      header={<>
+    <MainLayout>
+      <div className="flex items-center justify-between py-10">
         <div className="flex items-center gap-3">
           <BackButton/>
-          {
-            !editActivityTitle 
-            ? <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="todo-title">{activityTitle}</PageTitle>
+          {!editActivityTitle 
+            ? <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="todo-title">
+                {activityTitle}
+              </PageTitle>
             : <input 
                 onBlur={updateTitleActivity} 
                 onInput={(e) => setActivityTitle(e.target.value)} 
@@ -125,8 +126,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
           <TodoSorter selected={sortType} getValue={changeSortBy}/>
           <AddButton onClick={() => setOpenFormModal(true)} dataCy="todo-add-button" />
         </div>
-      </>}
-    >
+      </div>
       {
         todos.length
         ? <div className="grid grid-cols-1 gap-3 pb-10">

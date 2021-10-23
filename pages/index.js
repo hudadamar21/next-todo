@@ -55,17 +55,18 @@ export default function Home({ data = [] }) {
     setAlertMessage('Activity berhasil dihapus')
   }
 
-  const plusIcon = <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7" fill="white" viewBox="0 0 24 24" stroke="white"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
-
   return (
     <MainLayout
       header={<>
+        
+      </>}
+    >
+      <div className="flex items-center justify-between py-10">
         <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
           Activity
         </PageTitle>
         <AddButton onClick={createActivity} dataCy="activity-add-button" />
-      </>}
-    >
+      </div>
       {
         activity.length
         ? <div className="grid gap-3 pb-10 grid-cols-4">

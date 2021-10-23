@@ -1,4 +1,4 @@
-function MainLayout({ children, header }) {
+function MainLayout({ children }) {
  return (
   <div >
     <header className="bg-primary w-full" data-cy="header-background">
@@ -9,9 +9,6 @@ function MainLayout({ children, header }) {
       </div>
     </header>
     <main className="container">
-      <div className="flex items-center justify-between py-10">
-        { header }
-      </div>
       { children }
     </main>
   </div>

@@ -17,7 +17,7 @@ function TodoSorter({ selected, getValue }) {
       <Listbox.Options className="absolute top-full mt-2 bg-white grid py-2 w-56 rounded-md shadow-lg" data-cy="sort-parent">
         {sorts.map(sort => (
           <Listbox.Option key={sort.name} value={sort.name} className="flex items-center justify-between px-7 py-3.5 hover:bg-primary/10 cursor-pointer" data-cy="sort-selection">
-            <div className="flex items-center gap-3" >
+            <div className="flex items-center gap-3" data-cy={sort.name === selected ? 'sort-selection-selected' : false}>
               <i data-cy="sort-selection-icon">{sort.icon}</i>
               <p data-cy="sort-selection-title">{sort.name}</p>
             </div>
