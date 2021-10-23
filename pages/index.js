@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 
 const MainLayout = dynamic(
   () => import('../layouts/MainLayout'),
-  { loading: () => <p>loading...</p>, ssr: false }
+  { loading: () => <p>loading...</p> }
 )
 const PageTitle = dynamic(() => import('../components/PageTitle'))
 const AddButton = dynamic(() => import('../components/AddButton'))
