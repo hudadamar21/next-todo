@@ -65,9 +65,10 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
 
   const handleChangeIsActive = async (id, data) => {
     const res = await updateTodo(id, data)
-    setTodos(todos => todos.map(todo => {
+    const upTodos = todos.map(todo => {
       return todo.id === id ? { ...todo, is_active: res.data.is_active } : todo
-    }))
+    })
+    setTodos(sorting(upTodos, sortType))
   }
 
   const handleDeleteTodo = async () => {
