@@ -21,8 +21,7 @@ function TodoSorter({ selected, getValue }) {
               <i data-cy="sort-selection-icon">{sort.icon}</i>
               <p data-cy="sort-selection-title">{sort.name}</p>
             </div>
-            {sort.name === selected && 
-            <div data-cy="sort-selection-selected">{checkedIcon}</div>}
+            {sort.name === selected && checkedIcon}
           </Listbox.Option>
         ))}
       </Listbox.Options>
