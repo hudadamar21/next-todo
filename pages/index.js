@@ -14,14 +14,14 @@ const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
 
 Home.getInitialProps = async () => {
-  const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
-  const { data } = await axios.get(url)
+  const { data } = await axios.get(
+    "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
+  )
   return { data: data.data }
 }
 
 export default function Home({ data = [] }) {
   const [activity, setActivity ] = useState(data)
-
   const [ deleteActivityData, setDeleteActivityData] = useState(null)
   const [ alertMessage, setAlertMessage] = useState(null)
 
@@ -33,11 +33,12 @@ export default function Home({ data = [] }) {
   }
 
   const createActivity = async () => {
-    await axios.post("https://todo.api.devcode.gethired.id/activity-groups", { 
+    const data = await axios.post(
+      "https://todo.api.devcode.gethired.id/activity-groups", { 
       title: 'New Activity', 
       email: 'hudadamar21@gmail.com' 
     })
-    getActivity()
+    setActivity(val => [data.data, ...val])
   }
   
   const openDeleteModal = (e, ac) => {
@@ -56,11 +57,7 @@ export default function Home({ data = [] }) {
   }
 
   return (
-    <MainLayout
-      header={<>
-        
-      </>}
-    >
+    <MainLayout>
       <div className="flex items-center justify-between py-10">
         <PageTitle onClick={() => setEditActivityTitle(true)} dataCy="activity-title">
           Activity
