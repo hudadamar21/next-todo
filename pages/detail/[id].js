@@ -27,7 +27,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   const [ activityTitle, setActivityTitle ] = useState(title)
   const [ editActivityTitle, setEditActivityTitle ] = useState(false)
 
-  const [ sortType, setSortType ] = useState('Belum Selesai')
+  const [ sortType, setSortType ] = useState('Terbaru')
   const [ deleteTodoData, setDeleteTodoData ] = useState(null)
   const [ openFormModal, setOpenFormModal ] = useState(false)
   const [ alertMessage, setAlertMessage] = useState(null)
@@ -65,9 +65,10 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   }
 
   const handleChangeIsActive = async (id, data) => {
-    await updateTodo(id, data)
-    const restodo = await axios.get(`https://todo.api.devcode.gethired.id/todo-items?activity_group_id=${activityId}`)
-    setTodos(() => [...sorting(restodo.data.data, sortType)])
+    const res = await updateTodo(id, data)
+    setTodos(todos => todos.map(todo => {
+      return todo.id === id ? { ...todo, is_active: res.data.is_active } : todo
+    }))
   }
 
   const handleDeleteTodo = async () => {
@@ -90,6 +91,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
 
   const updateTitleActivity = async () => {
     const { data } = await axios.patch(`https://todo.api.devcode.gethired.id/activity-groups/${activityId}`, { title: activityTitle })
+    console.log(data);
     setActivityTitle(data.title)
     setEditActivityTitle(false)
   }
