@@ -9,7 +9,7 @@ function sorting(data, value) {
     case 'Z-A' :
       return data.sort((a, b) => a.title < b.title ? 1 : a.title > b.title ? -1 : 0)
     case 'Belum Selesai' :
-      return data.sort((a, b) => a.is_active < b.is_active ? -1 : a.is_active > b.is_active ? 1 : 0)
+      return data.sort((a, b) => a.is_active < b.is_active ? 1 : a.is_active > b.is_active ? -1 : 0)
   }
 }
 
