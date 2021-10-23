@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios"
 import dynamic from 'next/dynamic'
 
@@ -15,25 +15,11 @@ const TodoSorter = dynamic(() => import('../../components/TodoSorter'))
 const ModalDelete = dynamic(() => import('../../components/ModalDelete'))
 const Alert = dynamic(() => import('../../components/Alert'))
 
-export async function getServerSideProps({ query }) {
+DetailItem.getInitialProps = async ({ query }) => {
   const { data } = await axios.get(
     `https://todo.api.devcode.gethired.id/activity-groups/${query.id}`
   )
-  
-  if (!data) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
-  }
-
-  return {
-    props: {
-      data
-    }
-  }
+  return { data }
 }
 
 function DetailItem({data: { id: activityId = null, title = '', todo_items = [] }}) {
@@ -47,10 +33,9 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
   const [ alertMessage, setAlertMessage] = useState(null)
 
   
-  const changeSortBy = (value) => {
-    setSortType(value)
-    setTodos(() => [...sorting(todos,value)])
-  }
+  useEffect(() => {
+    setTodos(() => [...sorting(todos, sortType)])
+  }, [sortType])
 
   const createTodo = async (name, priority) => {
     console.log(name, priority);
@@ -61,8 +46,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
       const res = await axios.post("https://todo.api.devcode.gethired.id/todo-items", {
         activity_group_id: activityId, 
         title: name, 
-        priority,
-        is_active: 0
+        priority
       })
       setTodos(todo => [res.data, ...todo])
       setOpenFormModal(false)
@@ -133,7 +117,7 @@ function DetailItem({data: { id: activityId = null, title = '', todo_items = [] 
           </button>
         </div>
         <div className="flex items-center gap-5">
-          <TodoSorter selected={sortType} getValue={changeSortBy}/>
+          <TodoSorter selected={sortType} getValue={setSortType}/>
           <AddButton onClick={() => setOpenFormModal(true)} dataCy="todo-add-button" />
         </div>
       </>}
