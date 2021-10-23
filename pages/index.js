@@ -10,14 +10,10 @@ const AcCard = dynamic(() => import('../components/AcCard'))
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
 
-export async function getServerSideProps() {
+Home.getInitialProps = async () => {
   const url = "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   const { data } = await axios.get(url)
-  return {  
-    props: {
-      data: data.data
-    }
-  }
+  return { data }
 }
 
 export default function Home({ data = [] }) {
