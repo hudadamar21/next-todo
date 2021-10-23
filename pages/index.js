@@ -7,9 +7,9 @@ const MainLayout = dynamic(
   () => import('../layouts/MainLayout'),
   { loading: () => <p>loading...</p>, ssr: false }
 )
-const PageTitle = dynamic(() => import('../components/PageTitle'), { ssr: false })
-const AddButton = dynamic(() => import('../components/AddButton'), { ssr: false })
-const AcCard = dynamic(() => import('../components/AcCard'), { ssr: false })
+const PageTitle = dynamic(() => import('../components/PageTitle'))
+const AddButton = dynamic(() => import('../components/AddButton'))
+const AcCard = dynamic(() => import('../components/AcCard'))
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
 
