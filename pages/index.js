@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
@@ -10,22 +10,29 @@ const AcCard = dynamic(() => import('../components/AcCard'))
 const ModalDelete = dynamic(() => import('../components/ModalDelete'))
 const Alert = dynamic(() => import('../components/Alert'))
 
-Home.getInitialProps = async () => {
+// Home.getInitialProps = async () => {
+//   const { data } = await axios.get(
+//     "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
+//   )
+//   return { data: data.data }
+// }
+
+export async function getStaticProps () {
   const { data } = await axios.get(
     "https://todo.api.devcode.gethired.id/activity-groups?email=hudadamar21%40gmail.com"
   )
-  return { data: data.data }
+  return {
+    props: {
+      data: data.data
+    },
+    revalidate: true
+  }
 }
 
 export default function Home({ data = [] }) {
-  const [ load, setLoad ] = useState(false)
   const [activity, setActivity ] = useState(data)
   const [ deleteActivityData, setDeleteActivityData] = useState(null)
   const [ alertMessage, setAlertMessage] = useState(null)
-
-  useEffect(() => {
-    setLoad(true)
-  }, [])
 
   const getActivity = async () => {
     const res = await axios.get(
@@ -58,7 +65,7 @@ export default function Home({ data = [] }) {
     setAlertMessage('Activity berhasil dihapus')
   }
 
-  return load && (
+  return (
     <MainLayout>
       <div className="flex items-center justify-between py-10">
         <PageTitle dataCy="activity-title">Activity</PageTitle>
